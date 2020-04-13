@@ -1,6 +1,9 @@
 package com.thoughtWorks.demo;
 
+import org.springframework.data.annotation.Id;
+
 public class Student {
+    @Id
     private String name;
     private String gender;
     private String grade;
