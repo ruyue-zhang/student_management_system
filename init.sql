@@ -1,0 +1,6 @@
+CREATE TABLE student
+(
+    name VARCHAR(20) PRIMARY KEY,
+    gender VARCHAR(10) NOT NULL,
+    grade VARCHAR(10) NOT NULL
+)
