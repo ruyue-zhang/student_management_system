@@ -14,38 +14,45 @@ import java.util.Optional;
 
 @RestController
 public class StudentController {
-    Map<String,Student> studentMap = new LinkedHashMap<>();
 
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentServices studentServices;
 
     @PostMapping("/add")
     public String addStudent(@RequestBody Student student) {
-        if(studentRepository.existsById(student.getName())) {
-            return new String("姓名重复");
-        } else {
-            studentRepository.insert(student.getName(),student.getGender(),student.getGrade());
-            return new String("添加成功");
+        try {
+            return studentServices.addStudent(student);
+        } catch (RuntimeException e) {
+            return e.getMessage();
         }
     }
 
     @GetMapping("/findAll")
     public Iterable<Student> findAllStudent() {
-        return studentRepository.findAll();
+        try {
+            return studentServices.findAllStudent();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @GetMapping("/query")
     public Optional<Student> queryById(@RequestParam(name = "name") String name) {
-        return studentRepository.findById(name);
+        try {
+            return studentServices.queryById(name);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 
     @DeleteMapping("/delete")
     public String deleteById(@RequestParam(name = "name") String name) {
-        if(studentRepository.existsById(name)) {
-            studentRepository.deleteById(name);
-            return new String("删除成功");
-        } else {
-            return new String("该学生不存在");
+        try {
+            return studentServices.deleteById(name);
+        } catch (RuntimeException e) {
+            return e.getMessage();
         }
     }
 }
